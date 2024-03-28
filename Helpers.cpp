@@ -33,14 +33,14 @@ std::vector<std::vector<std::string>> Helpers::parseCSV(const std::string& fileP
   return result;
 }
 
-std::vector<IndividualCountry> Helpers::ConstructIndividuals(Csv2DVector data2Dvec) {
-  std::vector<IndividualCountry> individualsVec;
+std::vector<IndividualCity> Helpers::ConstructIndividuals(Csv2DVector data2Dvec) {
+  std::vector<IndividualCity> individualsVec;
   for (auto line: data2Dvec) {
     std::string countryName = line.at(0);
     float latitude = atof(line.at(1).c_str());
     float longitude = atof(line.at(2).c_str());
 
-    auto individual = IndividualCountry(countryName, latitude, longitude);
+    auto individual = IndividualCity(countryName, latitude, longitude);
     individualsVec.push_back(individual);
   }
 

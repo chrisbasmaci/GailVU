@@ -6,5 +6,5 @@ set(CMAKE_CXX_STANDARD 20)
 add_executable(GeometricTravellingSalesman main.cpp
         Helpers.cpp
         Helpers.h
-        IndividualCountry.cpp
-        IndividualCountry.h)
+        IndividualCity.cpp
+        IndividualCity.h)
