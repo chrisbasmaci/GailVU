@@ -1,0 +1,24 @@
+# Ignore build directories
+build/
+cmake-build-debug/
+cmake-build-release/
+
+# Ignore CMake cache and temporary files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.make
+
+# Ignore more generated files
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.user
+*.userprefs
+*.DS_Store
+*.idea/
+
+# Optionally ignore the install directory (if CMake is configured to use one)
+# install/
+
