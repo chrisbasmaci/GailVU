@@ -19,9 +19,9 @@ IndividualTour::IndividualTour(Darwin &darwin) : _darwin(&darwin) {
   for (int i = 0; i < _darwin->cities().size(); ++i) {
     _chromosome.push_back(i);
   }
-
   // Shuffle the chromosome
   std::shuffle(_chromosome.begin(), _chromosome.end(), g);
+  fitness();
 
 }
 
@@ -105,6 +105,21 @@ std::vector<int> IndividualTour::crossover(IndividualTour &partner) {
   return child2_chromosome;
 
 
+}
+
+void IndividualTour::mutate() {
+  for (size_t i = 0; i < _chromosome.size(); i++) {
+    // Check if mutation should occur for this city
+    if (getRandomDouble() < Mutation_Rate) {
+      size_t swapIndex = i;
+      size_t swapWith;
+      do {
+        swapWith = getRandomNumber(_chromosome.size());
+      }while (swapWith == swapIndex);
+
+      std::swap(_chromosome[swapIndex], _chromosome[swapWith]);
+    }
+  }
 }
 
 

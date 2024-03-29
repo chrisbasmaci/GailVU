@@ -7,9 +7,7 @@ typedef std::vector<std::vector<std::string>> Csv2DVector;
 Darwin::Darwin(Csv2DVector parsedCSV) : _parsedCSV(std::move(parsedCSV)) {
   _cities = constructCityVector(_parsedCSV);
   _population = constructIndividualTourVector();
-  for (auto& individual : _population) {
-    individual->fitness();
-  }
+
 }
 
 // Definition of doSomething member function

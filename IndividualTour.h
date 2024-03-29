@@ -36,6 +36,7 @@ class IndividualTour {
   float calculateDistance(float lat1, float lon1, float lat2, float lon2);
   void fitness();
   std::vector<int> crossover(IndividualTour& partner);
+  void mutate();
 
 };
 

@@ -10,4 +10,5 @@ add_executable(GeometricTravellingSalesman main.cpp
         Darwin.cpp
         Darwin.h
         IndividualTour.cpp
-        IndividualTour.h)
+        IndividualTour.h
+        Helpers.h)

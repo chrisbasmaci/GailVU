@@ -2,14 +2,8 @@
 // Created by chris on 28.03.24.
 //
 
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <vector>
-#include <sstream> // Include for std::stringstream
-#include <random>
-#include <set>
 
+#include "Helpers.h"
 static std::vector<std::vector<std::string>> parseCSV(const std::string& filePath) {
   std::vector<std::vector<std::string>> result;
   std::ifstream file(filePath.c_str());
@@ -39,7 +33,7 @@ static std::vector<std::vector<std::string>> parseCSV(const std::string& filePat
   file.close();
   return result;
 }
-std::size_t getRandomNumber(std::size_t size) {
+static std::size_t getRandomNumber(std::size_t size) {
   std::random_device rd;
   std::mt19937 gen(rd());
   std::uniform_int_distribution<std::size_t> distrib(0, size - 1);
@@ -58,3 +52,11 @@ static void appendInOrder(std::vector<int> &child, const std::vector<int> &order
     }
   }
 }
+static double getRandomDouble() {
+  std::random_device rd;
+  std::mt19937 gen(rd());
+  std::uniform_real_distribution<double> distrib(0.0, 1.0);
+
+  return distrib(gen);
+}
+

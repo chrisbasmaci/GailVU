@@ -2,7 +2,7 @@
 #include <iostream>
 
 #include "Darwin.h"
-#include "Helpers.cpp"
+#include "Helpers.h"
 #include "City.h"
 #include "IndividualTour.h"
 
