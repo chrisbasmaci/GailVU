@@ -10,9 +10,6 @@ typedef std::vector<std::vector<std::string>> Csv2DVector;
 class IndividualTour;
 #define POPULATION_TOTAL 100
 class Darwin {
-public:
-  const static int population_size = POPULATION_TOTAL;
-private:
   Csv2DVector _parsedCSV;
   std::vector<City*> _cities;
   std::vector<IndividualTour*> _population;

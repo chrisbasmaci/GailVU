@@ -29,7 +29,7 @@ std::vector<City*> Darwin::constructCityVector(const Csv2DVector& data2Dvec) {
 
 std::vector<IndividualTour*> Darwin::constructIndividualTourVector() {
   std::vector<IndividualTour*> individualsVec;
-  for (int individual = 0; individual < population_size; ++individual) {
+  for (int individual = 0; individual < POPULATION_TOTAL; ++individual) {
     individualsVec.push_back(new IndividualTour(*this));
   }
   return individualsVec;

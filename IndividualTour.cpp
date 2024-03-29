@@ -14,7 +14,7 @@ IndividualTour::IndividualTour(Darwin &darwin) : _darwin(&darwin) {
   std::mt19937 g(rd());
 
   // Initialize chromosome
-  for (int i = 0; i < Darwin::population_size; ++i) {
+  for (int i = 0; i < _darwin->cities().size(); ++i) {
     _chromosome.push_back(i);
   }
 
