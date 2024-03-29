@@ -7,7 +7,8 @@
 #include <string>
 #include <vector>
 #include <sstream> // Include for std::stringstream
-
+#include <random>
+#include <set>
 
 static std::vector<std::vector<std::string>> parseCSV(const std::string& filePath) {
   std::vector<std::vector<std::string>> result;
@@ -37,4 +38,23 @@ static std::vector<std::vector<std::string>> parseCSV(const std::string& filePat
 
   file.close();
   return result;
+}
+std::size_t getRandomNumber(std::size_t size) {
+  std::random_device rd;
+  std::mt19937 gen(rd());
+  std::uniform_int_distribution<std::size_t> distrib(0, size - 1);
+
+  return distrib(gen);
+}
+
+static void appendInOrder(std::vector<int> &child, const std::vector<int> &orderedParent) {
+  std::set<int> includedCities(child.begin(), child.end()); // Start with cities already in child
+
+  for (int city : orderedParent) {
+    // Only add the city if it's not already included, ensuring uniqueness
+    if (includedCities.find(city) == includedCities.end()) {
+      child.push_back(city);
+      includedCities.insert(city);
+    }
+  }
 }

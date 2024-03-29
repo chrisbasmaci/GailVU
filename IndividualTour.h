@@ -5,7 +5,7 @@
 #ifndef INDIVIDUALTOUR_H
 #define INDIVIDUALTOUR_H
 #include <vector>
-
+#include "Helpers.cpp"
 #include "Darwin.h"
 class Darwin;
 
@@ -16,7 +16,7 @@ class IndividualTour {
     Darwin* _darwin;
 
   public:
-    IndividualTour(Darwin &darwin);
+    explicit IndividualTour(Darwin &darwin);
     IndividualTour() = delete;
 
     [[nodiscard]] std::vector<int> chromosome() const {
@@ -35,6 +35,7 @@ class IndividualTour {
 
   float calculateDistance(float lat1, float lon1, float lat2, float lon2);
   void fitness();
+  std::vector<int> crossover(IndividualTour& partner);
 
 };
 

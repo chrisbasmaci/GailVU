@@ -11,6 +11,7 @@
 
 ///TODO need to change this to environment variable instead I think
 typedef std::vector<std::vector<std::string>> Csv2DVector;
+///TODO need to add destructors in Darwin
 
 //---------------------------------------------------------
 int main()

@@ -7,6 +7,8 @@
 
 #include "IndividualTour.h"
 
+#include <assert.h>
+
 #include "Darwin.h"
 
 IndividualTour::IndividualTour(Darwin &darwin) : _darwin(&darwin) {
@@ -22,8 +24,6 @@ IndividualTour::IndividualTour(Darwin &darwin) : _darwin(&darwin) {
   std::shuffle(_chromosome.begin(), _chromosome.end(), g);
 
 }
-
-
 
 // Haversine formula implementation to calculate distance between two points on the Earth
 float IndividualTour::calculateDistance(float lat1, float lon1, float lat2, float lon2) {
@@ -46,6 +46,7 @@ float IndividualTour::calculateDistance(float lat1, float lon1, float lat2, floa
   return std::abs(distance); // Ensure non-negative result
 
 }
+
 float IndividualTour::calculatePathLength() {
   // std::cout <<coord_.first <<"||"<<coord_.second <<std::endl;
   float distance = 0.0;
@@ -65,3 +66,46 @@ float IndividualTour::calculatePathLength() {
 void IndividualTour::fitness() {
   _path_length = calculatePathLength();
 }
+
+//So we split with the given cutoff
+//ex: cutoff = 3
+//mother = 0 1 2 | 3 4 5
+//father = 6 7 8 | 9 10 11
+//mother will have the firsthalf included ie 0 1 2 | . . .
+//father will have the secondhalf included ie . . . | 9 10 11
+//Rest will be filled in order based on the other parent
+//ordermother = 3 4 5 | 0 1 2 (fathers half will use this order)
+//orderfather = 6 7 8 | 9 10 11 (mothers half will use this order)
+
+std::vector<int> IndividualTour::crossover(IndividualTour &partner) {
+  auto mother_chromosome = partner.chromosome();
+  auto father_chromosome = _chromosome;
+  assert(mother_chromosome.size() == father_chromosome.size());
+
+  size_t cutoff = getRandomNumber(mother_chromosome.size());
+
+  // Split mother's chromosome
+  std::vector<int> firstHalfMother(mother_chromosome.begin(), mother_chromosome.begin() + cutoff);
+  std::vector<int> orderfMother(mother_chromosome.begin() + cutoff, mother_chromosome.end());
+  orderfMother.insert(orderfMother.end(), mother_chromosome.begin(), mother_chromosome.begin() + cutoff);
+
+  // Split father's chromosome
+  std::vector<int> secondHalfFather(father_chromosome.begin() + cutoff, father_chromosome.end());
+  std::vector<int> orderFather = father_chromosome;
+
+  //mother order
+  std::vector<int> mother(father_chromosome.begin(), father_chromosome.begin() + cutoff);
+
+  std::vector<int> child1_chromosome;
+  std::vector<int> child2_chromosome;
+  appendInOrder(child1_chromosome, orderFather); // Fill rest of child1 with cities from father, maintaining order
+  appendInOrder(child2_chromosome, orderfMother); // Fill rest of child2 with cities from mother, maintaining order
+
+  _chromosome = child1_chromosome;
+  return child2_chromosome;
+
+
+}
+
+
+
