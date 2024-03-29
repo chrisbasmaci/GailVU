@@ -12,6 +12,7 @@ class Darwin;
 class IndividualTour {
     std::vector<int> _chromosome{};
     float _path_length= 0;
+
     Darwin* _darwin;
 
   public:
@@ -25,8 +26,12 @@ class IndividualTour {
     [[nodiscard]] float path_length() const {
       return _path_length;
     }
-  
-  float calculatePathLength();
+
+    [[nodiscard]] float fitness_score() const {
+      return 1/_path_length;
+    }
+
+    float calculatePathLength();
 
   float calculateDistance(float lat1, float lon1, float lat2, float lon2);
   void fitness();
