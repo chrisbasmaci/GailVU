@@ -33,12 +33,17 @@ static std::vector<std::vector<std::string>> parseCSV(const std::string& filePat
   file.close();
   return result;
 }
-static std::size_t getRandomNumber(std::size_t size) {
+static std::size_t getRandomNumber(std::size_t size, std::size_t exclude = std::numeric_limits<std::size_t>::max()) {
   std::random_device rd;
   std::mt19937 gen(rd());
   std::uniform_int_distribution<std::size_t> distrib(0, size - 1);
 
-  return distrib(gen);
+  std::size_t number;
+  do {
+    number = distrib(gen);
+  } while (number == exclude);
+
+  return number;
 }
 
 static void appendInOrder(std::vector<int> &child, const std::vector<int> &orderedParent) {

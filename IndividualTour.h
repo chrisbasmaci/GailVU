@@ -16,6 +16,8 @@ class IndividualTour {
     Darwin* _darwin;
 
   public:
+  bool is_best = false;
+    void positionBasedCrossover(const IndividualTour* mother);
     explicit IndividualTour(Darwin &darwin);
     IndividualTour() = delete;
 
@@ -28,7 +30,7 @@ class IndividualTour {
     }
 
     [[nodiscard]] float fitness_score() const {
-      return 1/_path_length;
+      return 1000000/_path_length;
     }
 
     float calculatePathLength();

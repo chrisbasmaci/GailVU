@@ -20,7 +20,9 @@ int main()
     auto parsedCSV = parseCSV(CSV_PATH);
     // assert(parsedCSV.size() == POPULATION_TOTAL);
     auto DARWIN = new Darwin(parsedCSV);
-    DARWIN->printFirstIndividual();
+    DARWIN->startEvolving();
+    DARWIN->printBestIndividual();
+    std::cout << "Bye, World!" << std::endl;
 
 
     return 0;

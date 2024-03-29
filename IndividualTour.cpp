@@ -67,59 +67,60 @@ void IndividualTour::fitness() {
   _path_length = calculatePathLength();
 }
 
-//So we split with the given cutoff
-//ex: cutoff = 3
-//mother = 0 1 2 | 3 4 5
-//father = 6 7 8 | 9 10 11
-//mother will have the firsthalf included ie 0 1 2 | . . .
-//father will have the secondhalf included ie . . . | 9 10 11
-//Rest will be filled in order based on the other parent
-//ordermother = 3 4 5 | 0 1 2 (fathers half will use this order)
-//orderfather = 6 7 8 | 9 10 11 (mothers half will use this order)
+void IndividualTour::positionBasedCrossover(const IndividualTour* mother) {
+    if(is_best) {
+      return;
+    }
+    std::vector<int> offspringChromosome(_chromosome.size(), -1); // Initialize with -1
+    std::vector<int> positions; // Positions to be copied from the father
 
-std::vector<int> IndividualTour::crossover(IndividualTour &partner) {
-  auto mother_chromosome = partner.chromosome();
-  auto father_chromosome = _chromosome;
-  assert(mother_chromosome.size() == father_chromosome.size());
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> distr(0, _chromosome.size() - 1);
 
-  size_t cutoff = getRandomNumber(mother_chromosome.size());
+    // Randomly select positions
+    for (size_t i = 0; i < _chromosome.size() / 2; ++i) {
+        int pos;
+        do {
+            pos = distr(gen);
+        } while (std::find(positions.begin(), positions.end(), pos) != positions.end());
+        positions.push_back(pos);
+        offspringChromosome[pos] = _chromosome[pos];
+    }
 
-  // Split mother's chromosome
-  std::vector<int> firstHalfMother(mother_chromosome.begin(), mother_chromosome.begin() + cutoff);
-  std::vector<int> orderfMother(mother_chromosome.begin() + cutoff, mother_chromosome.end());
-  orderfMother.insert(orderfMother.end(), mother_chromosome.begin(), mother_chromosome.begin() + cutoff);
+    // Copy the mother's chromosome, then remove cities already placed in the offspring
+    std::vector<int> remainingCities = mother->chromosome(); // Direct access
+    remainingCities.erase(std::remove_if(remainingCities.begin(), remainingCities.end(),
+                    [&offspringChromosome](int city) {
+                        return std::find(offspringChromosome.begin(), offspringChromosome.end(), city) != offspringChromosome.end();
+                    }), remainingCities.end());
 
-  // Split father's chromosome
-  std::vector<int> secondHalfFather(father_chromosome.begin() + cutoff, father_chromosome.end());
-  std::vector<int> orderFather = father_chromosome;
+    // Fill in the remaining positions with cities from the mother
+    for (size_t i = 0, j = 0; i < offspringChromosome.size(); ++i) {
+        if (offspringChromosome[i] == -1) {
+            offspringChromosome[i] = remainingCities[j++];
+        }
+    }
 
-  //mother order
-  std::vector<int> mother(father_chromosome.begin(), father_chromosome.begin() + cutoff);
-
-  std::vector<int> child1_chromosome;
-  std::vector<int> child2_chromosome;
-  appendInOrder(child1_chromosome, orderFather); // Fill rest of child1 with cities from father, maintaining order
-  appendInOrder(child2_chromosome, orderfMother); // Fill rest of child2 with cities from mother, maintaining order
-
-  _chromosome = child1_chromosome;
-  return child2_chromosome;
-
-
+    _chromosome = offspringChromosome; // Update the father's chromosome to the new offspring
 }
 
 void IndividualTour::mutate() {
-  for (size_t i = 0; i < _chromosome.size(); i++) {
-    // Check if mutation should occur for this city
-    if (getRandomDouble() < Mutation_Rate) {
-      size_t swapIndex = i;
-      size_t swapWith;
-      do {
-        swapWith = getRandomNumber(_chromosome.size());
-      }while (swapWith == swapIndex);
-
-      std::swap(_chromosome[swapIndex], _chromosome[swapWith]);
+///Implement
+  if(getRandomDouble()>Mutation_Rate || is_best){
+    if(getRandomDouble()>Mutation_Rate){
+      goto here;
     }
+    return;
   }
+  here:
+  auto start = getRandomNumber(_chromosome.size());
+  auto end = getRandomNumber(_chromosome.size(),start);
+  auto arr = _chromosome;
+  std::reverse(arr.begin() + start, arr.begin() + end + 1);
+
+  //------------------
+
 }
 
 
