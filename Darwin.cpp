@@ -63,26 +63,38 @@ void Darwin::printBestIndividual() {
 }
 
 void Darwin::conductSelection() {
-  // std::vector<IndividualTour*> challenged_pool = _population;
-  // std::vector<IndividualTour*> challenger_pool = _population;
-  std::vector<IndividualTour*> survivors = {};
-  //
-  // for (auto& challenged : challenged_pool) {
-  //   IndividualTour* challenger;
-  //   challenger = challenger_pool.at(getRandomNumber(challenger_pool.size()));
-  //
-  //   auto survivor = challenged->fitness_score() > challenger->fitness_score() ? challenged : challenger;
-  //   survivors.push_back(survivor);
-  //   challenger_pool.erase(std::find(challenger_pool.begin(), challenger_pool.end(), challenger));
-  //
-  // }
+  std::vector<IndividualTour*> survivors;
+
+  // First, make sure to identify and preserve the best individuals
   setBestIndividual();
 
-  for (auto population : _population) {
-    survivors.push_back(rouletteWheelSelection());
+  // Copy best individuals directly to the new population
+  for (auto& individual : _population) {
+    if(individual->is_best) {
+      IndividualTour* copy = new IndividualTour(*individual); // Assume correct copy constructor
+      survivors.push_back(copy);
+    }
   }
+
+  // Fill the rest of the population
+  while (survivors.size() < POPULATION_TOTAL) {
+    IndividualTour* selected = rouletteWheelSelection();
+    // Assuming you want to avoid adding the best again, which seems already covered above
+    IndividualTour* copy = new IndividualTour(*selected); // Create a deep copy if necessary
+    survivors.push_back(copy);
+  }
+
+  // Proper memory management: Delete the old individuals to avoid memory leaks
+  for (auto& individual : _population) {
+    delete individual; // Free memory of the old individuals
+  }
+
+  // Assign the new list of survivors back to the population
   _population = survivors;
+
+  // Reset the best indicator for the next generation, if needed here or elsewhere in your logic
 }
+
 void Darwin::setBestIndividual() {
   // Reset is_best to false for all individuals
   for (auto& ind : _population) {
@@ -96,12 +108,11 @@ void Darwin::setBestIndividual() {
             });
 
   // Set is_best to true for the top 10 individuals or the entire population if it has less than 10 individuals
-  int count = std::min(static_cast<int>(_population.size()), 50);
+  int count = std::min(static_cast<int>(_population.size()), 100);
   for (int i = 0; i < count; ++i) {
     _population.at(i)->is_best = true;
   }
 }IndividualTour* Darwin::rouletteWheelSelection() {
-  // Calculate the total fitness of the population
   double totalFitness = 0.0;
   for (auto& individual : _population) {
     totalFitness += individual->fitness_score();
@@ -133,6 +144,7 @@ void Darwin::startEvolving() {
     for (size_t idx = 0; idx < _population.size(); ++idx) {
       _population[idx]->positionBasedCrossover(rouletteWheelSelection());
       _population[idx]->mutate();
+      _population[idx]->mutate2();
       _population[idx]->fitness();
     }
   }

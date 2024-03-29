@@ -107,7 +107,7 @@ void IndividualTour::positionBasedCrossover(const IndividualTour* mother) {
 
 void IndividualTour::mutate() {
 ///Implement
-  if(getRandomDouble()>Mutation_Rate || is_best){
+  if(getRandomDouble()<Mutation_Rate || is_best){
     if(getRandomDouble()>Mutation_Rate){
       goto here;
     }
@@ -121,6 +121,27 @@ void IndividualTour::mutate() {
 
   //------------------
 
+}
+void IndividualTour::mutate2() {
+  if (is_best) {
+    return; // Also ensure we have enough elements to perform a mutation
+  }
+  // if(is_ranker && getRandomDouble()<RankerRate){
+  //   return;
+  // }
+  if(getRandomDouble()<Mutation_Rate){
+    return;
+  }
+  // Ensure start is strictly less than end to avoid length_error
+  auto start = getRandomNumber(_chromosome.size() - 1); // -1 ensures start is never the last index
+  auto end = start + 1 + getRandomNumber(_chromosome.size() - start - 1); // Ensure end is after start and within bounds
+
+  std::vector<int> temp(_chromosome.begin() + start, _chromosome.begin() + end);
+
+  _chromosome.erase(_chromosome.begin() + start, _chromosome.begin() + end);
+
+  // Append the segment to the end of the vector
+  _chromosome.insert(_chromosome.end(), temp.begin(), temp.end());
 }
 
 

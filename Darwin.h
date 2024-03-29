@@ -8,8 +8,8 @@
 #include <vector>
 typedef std::vector<std::vector<std::string>> Csv2DVector;
 class IndividualTour;
-#define POPULATION_TOTAL 1000
-#define Mutation_Rate 0.05
+#define POPULATION_TOTAL 500
+#define Mutation_Rate 0.1
 class Darwin {
   Csv2DVector _parsedCSV;
   std::vector<City*> _cities;

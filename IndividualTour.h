@@ -39,6 +39,7 @@ class IndividualTour {
   void fitness();
   std::vector<int> crossover(IndividualTour& partner);
   void mutate();
+  void mutate2();
 
 };
 
