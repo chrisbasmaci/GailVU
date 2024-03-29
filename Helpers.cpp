@@ -2,8 +2,14 @@
 // Created by chris on 28.03.24.
 //
 
-#include "Helpers.h"
-std::vector<std::vector<std::string>> Helpers::parseCSV(const std::string& filePath) {
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <sstream> // Include for std::stringstream
+
+
+static std::vector<std::vector<std::string>> parseCSV(const std::string& filePath) {
   std::vector<std::vector<std::string>> result;
   std::ifstream file(filePath.c_str());
 
@@ -31,18 +37,4 @@ std::vector<std::vector<std::string>> Helpers::parseCSV(const std::string& fileP
 
   file.close();
   return result;
-}
-
-std::vector<IndividualCity> Helpers::ConstructIndividuals(Csv2DVector data2Dvec) {
-  std::vector<IndividualCity> individualsVec;
-  for (auto line: data2Dvec) {
-    std::string countryName = line.at(0);
-    float latitude = atof(line.at(1).c_str());
-    float longitude = atof(line.at(2).c_str());
-
-    auto individual = IndividualCity(countryName, latitude, longitude);
-    individualsVec.push_back(individual);
-  }
-
-  return individualsVec;
 }

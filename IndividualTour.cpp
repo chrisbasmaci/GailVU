@@ -1,29 +1,32 @@
 //
-// Created by chris on 28.03.24.
+// Created by chris on 29.03.24.
 //
-
-#include "IndividualCity.h"
+#include "City.h"
 #include <algorithm> // For std::shuffle
 #include <random>
 
-#include <utility>
-IndividualCity::IndividualCity(std::string name, const float &latitude, const float &longitude)
-    : _name(std::move(name)),
-      coord_(std::make_pair(latitude,longitude)) {
+#include "IndividualTour.h"
+
+#include "Darwin.h"
+
+IndividualTour::IndividualTour(Darwin &darwin) : _darwin(&darwin) {
   std::random_device rd;
   std::mt19937 g(rd());
 
   // Initialize chromosome
-  for (int i = 0; i < Country_Total; ++i) {
+  for (int i = 0; i < Darwin::population_size; ++i) {
     _chromosome.push_back(i);
   }
 
   // Shuffle the chromosome
   std::shuffle(_chromosome.begin(), _chromosome.end(), g);
+
 }
 
+
+
 // Haversine formula implementation to calculate distance between two points on the Earth
-float IndividualCity::calculateDistance(float lat1, float lon1, float lat2, float lon2) {
+float IndividualTour::calculateDistance(float lat1, float lon1, float lat2, float lon2) {
   // Earth's radius in kilometers
   constexpr float R = 6371.0f;
 
@@ -43,22 +46,22 @@ float IndividualCity::calculateDistance(float lat1, float lon1, float lat2, floa
   return std::abs(distance); // Ensure non-negative result
 
 }
-float IndividualCity::calculatePathLength() {
-    // std::cout <<coord_.first <<"||"<<coord_.second <<std::endl;
-    float distance = 0.0;
+float IndividualTour::calculatePathLength() {
+  // std::cout <<coord_.first <<"||"<<coord_.second <<std::endl;
+  float distance = 0.0;
 
-    for (size_t i = 0; i < _chromosome.size(); ++i) {
-      const IndividualCity& currentCity = getCities()[_chromosome[i]];
-      const IndividualCity& nextCity = getCities()[_chromosome[(i + 1) % _chromosome.size()]]; // Loop back to start
+  for (size_t i = 0; i < _chromosome.size(); ++i) {
+    const City *currentCity = _darwin->cities()[_chromosome[i]];
+    const City *nextCity = _darwin->cities()[_chromosome[(i + 1) % _chromosome.size()]]; // Loop back to start
 
-      distance += calculateDistance(currentCity.coord().first, currentCity.coord().second,
-                                      nextCity.coord().first, nextCity.coord().second);
-    }
+    distance += calculateDistance(currentCity->coord().first, currentCity->coord().second,
+                                    nextCity->coord().first, nextCity->coord().second);
+  }
 
 
-    return distance;
+  return distance;
 }
 
-void IndividualCity::fitness() {
+void IndividualTour::fitness() {
   _path_length = calculatePathLength();
 }
