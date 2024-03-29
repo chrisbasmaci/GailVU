@@ -101,18 +101,22 @@ void Darwin::setBestIndividual() {
     ind->is_best = false;
   }
 
-  // Sort the population based on fitness scores in descending order
-  std::sort(_population.begin(), _population.end(),
-            [](const IndividualTour* a, const IndividualTour* b) {
-                return a->fitness_score() > b->fitness_score();
-            });
+  // Define the number of top individuals you're interested in
+  int numberOfBestIndividuals = std::min(static_cast<int>(_population.size()), 60);
 
-  // Set is_best to true for the top 10 individuals or the entire population if it has less than 10 individuals
-  int count = std::min(static_cast<int>(_population.size()), 100);
-  for (int i = 0; i < count; ++i) {
+  // Partially sort the population to get the top 'numberOfBestIndividuals' based on fitness scores
+  std::partial_sort(_population.begin(), _population.begin() + numberOfBestIndividuals, _population.end(),
+                    [](const IndividualTour* a, const IndividualTour* b) {
+                        return a->fitness_score() > b->fitness_score();
+                    });
+
+  // Set is_best to true for these top individuals
+  for (int i = 0; i < numberOfBestIndividuals; ++i) {
     _population.at(i)->is_best = true;
   }
-}IndividualTour* Darwin::rouletteWheelSelection() {
+}
+
+IndividualTour* Darwin::rouletteWheelSelection() {
   double totalFitness = 0.0;
   for (auto& individual : _population) {
     totalFitness += individual->fitness_score();
@@ -138,7 +142,7 @@ void Darwin::setBestIndividual() {
   return _population.back();
 }
 void Darwin::startEvolving() {
-  for (int i = 0; i < 1000; ++i) {
+  for (int i = 0; i < 1300; ++i) {
     printBestIndividual();
     conductSelection();
     for (size_t idx = 0; idx < _population.size(); ++idx) {

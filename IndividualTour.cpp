@@ -71,38 +71,27 @@ void IndividualTour::positionBasedCrossover(const IndividualTour* mother) {
     if(is_best) {
       return;
     }
-    std::vector<int> offspringChromosome(_chromosome.size(), -1); // Initialize with -1
-    std::vector<int> positions; // Positions to be copied from the father
+    auto mother_chromosome = mother->chromosome();
+    auto father_chromosome = chromosome();
 
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> distr(0, _chromosome.size() - 1);
+    std::vector<int> offspring(100, -1);
 
-    // Randomly select positions
-    for (size_t i = 0; i < _chromosome.size() / 2; ++i) {
-        int pos;
-        do {
-            pos = distr(gen);
-        } while (std::find(positions.begin(), positions.end(), pos) != positions.end());
-        positions.push_back(pos);
-        offspringChromosome[pos] = _chromosome[pos];
+    for (size_t i = 0; i < _chromosome.size(); ++i) {
+      if(getRandomDouble() > 0.5) {
+        offspring.at(i) = mother_chromosome.at(i);
+        auto it = std::remove(father_chromosome.begin(), father_chromosome.end(), mother_chromosome.at(i));
+        father_chromosome.erase(it, father_chromosome.end());
+      }
     }
 
-    // Copy the mother's chromosome, then remove cities already placed in the offspring
-    std::vector<int> remainingCities = mother->chromosome(); // Direct access
-    remainingCities.erase(std::remove_if(remainingCities.begin(), remainingCities.end(),
-                    [&offspringChromosome](int city) {
-                        return std::find(offspringChromosome.begin(), offspringChromosome.end(), city) != offspringChromosome.end();
-                    }), remainingCities.end());
-
-    // Fill in the remaining positions with cities from the mother
-    for (size_t i = 0, j = 0; i < offspringChromosome.size(); ++i) {
-        if (offspringChromosome[i] == -1) {
-            offspringChromosome[i] = remainingCities[j++];
-        }
+  for (int& city : offspring) {
+    if(city == -1) {
+      city = father_chromosome.front();
+      father_chromosome.erase(father_chromosome.begin());
     }
+  }
+  _chromosome = offspring; // Update the father's chromosome to the new offspring
 
-    _chromosome = offspringChromosome; // Update the father's chromosome to the new offspring
 }
 
 void IndividualTour::mutate() {
