@@ -12,14 +12,16 @@ class Darwin;
 class IndividualTour {
     std::vector<int> _chromosome{};
     float _path_length= 0;
+    float _longest_distance = 0;
+    bool _secondaryEnabled;
 
     Darwin* _darwin;
 
   public:
-  bool is_best = false;
-  bool is_ranker = false;
+    bool is_best = false;
+    bool is_ranker = false;
     void positionBasedCrossover(const IndividualTour* mother);
-    explicit IndividualTour(Darwin &darwin);
+    explicit IndividualTour(Darwin &darwin, bool secondaryEnabled = false);
     IndividualTour() = delete;
 
     [[nodiscard]] std::vector<int> chromosome() const {
@@ -30,8 +32,16 @@ class IndividualTour {
       return _path_length;
     }
 
-    [[nodiscard]] float fitness_score() const {
-      return 1000000/_path_length;
+  [[nodiscard]] float fitness_score() const {
+      float totalPathScore = 100000 / _path_length;
+      if(!_secondaryEnabled) {
+        return totalPathScore;
+      }
+      float longestDistScore = 100000 / _longest_distance;
+
+      // Combine the scores. Adjust the weighting as needed.
+      float lambda = 0.4; // Weighting factor
+      return lambda * totalPathScore + (1 - lambda) * longestDistScore;
     }
 
     float calculatePathLength();

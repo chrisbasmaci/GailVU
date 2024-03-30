@@ -8,17 +8,17 @@
 #include <vector>
 typedef std::vector<std::vector<std::string>> Csv2DVector;
 class IndividualTour;
-#define POPULATION_TOTAL 45
+#define POPULATION_TOTAL 40
 #define Mutation_Rate 0.35
 #define Ranker_Rate 0.5
 class Darwin {
   Csv2DVector _parsedCSV;
   std::vector<City*> _cities;
   std::vector<IndividualTour*> _population;
-  std::vector<IndividualTour*> constructIndividualTourVector();
+  std::vector<IndividualTour*> constructIndividualTourVector(bool secondaryEnabled);
 
 public:
-  explicit Darwin(Csv2DVector parsedCSV);
+  explicit Darwin(Csv2DVector parsedCSV, bool secondaryEnabled = false);
   void startEvolving();
   IndividualTour* rouletteWheelSelection(IndividualTour* exclude = nullptr);
   void conductSelection();

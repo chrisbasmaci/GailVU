@@ -11,7 +11,7 @@
 
 #include "Darwin.h"
 
-IndividualTour::IndividualTour(Darwin &darwin) : _darwin(&darwin) {
+IndividualTour::IndividualTour(Darwin &darwin, bool secondaryEnabled) : _darwin(&darwin),_secondaryEnabled(secondaryEnabled) {
   std::random_device rd;
   std::mt19937 g(rd());
 
@@ -50,21 +50,22 @@ float IndividualTour::calculateDistance(float lat1, float lon1, float lat2, floa
 float IndividualTour::calculatePathLength() {
   // std::cout <<coord_.first <<"||"<<coord_.second <<std::endl;
   float distance = 0.0;
-
   for (size_t i = 0; i < _chromosome.size(); ++i) {
     const City *currentCity = _darwin->cities()[_chromosome[i]];
     const City *nextCity = _darwin->cities()[_chromosome[(i + 1) % _chromosome.size()]]; // Loop back to start
 
     distance += calculateDistance(currentCity->coord().first, currentCity->coord().second,
                                     nextCity->coord().first, nextCity->coord().second);
+    if(distance> _longest_distance){
+      _longest_distance = distance;
+    }
   }
-
-
   return distance;
 }
 
 void IndividualTour::fitness() {
   _path_length = calculatePathLength();
+
 }
 
 void IndividualTour::positionBasedCrossover(const IndividualTour* mother) {

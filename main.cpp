@@ -22,7 +22,7 @@ int main()
     std::cout << "Hello, World!" << std::endl;
     auto parsedCSV = parseCSV(CSV_PATH);
     // assert(parsedCSV.size() == POPULATION_TOTAL);
-    auto DARWIN = new Darwin(parsedCSV);
+    auto DARWIN = new Darwin(parsedCSV,true);
     DARWIN->startEvolving();
     DARWIN->printBestIndividual();
     auto end = std::chrono::high_resolution_clock::now();
@@ -30,6 +30,8 @@ int main()
     std::cout << "Elapsed time: " << elapsed.count() << " seconds" << std::endl;
     std::cout << "Bye, World!" << std::endl;
 
-
+    // auto DARWIN2 = new Darwin(parsedCSV,true);
+    // DARWIN2->startEvolving();
+    // DARWIN2->printBestIndividual();
     return 0;
 }

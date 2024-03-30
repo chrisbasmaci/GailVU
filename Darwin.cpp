@@ -4,9 +4,9 @@
 
 
 typedef std::vector<std::vector<std::string>> Csv2DVector;
-Darwin::Darwin(Csv2DVector parsedCSV) : _parsedCSV(std::move(parsedCSV)) {
+Darwin::Darwin(Csv2DVector parsedCSV, bool secondaryEnabled ) : _parsedCSV(std::move(parsedCSV)) {
   _cities = constructCityVector(_parsedCSV);
-  _population = constructIndividualTourVector();
+  _population = constructIndividualTourVector(secondaryEnabled);
 
 }
 
@@ -25,10 +25,10 @@ std::vector<City*> Darwin::constructCityVector(const Csv2DVector& data2Dvec) {
   return individualsVec;
 }
 
-std::vector<IndividualTour*> Darwin::constructIndividualTourVector() {
+std::vector<IndividualTour*> Darwin::constructIndividualTourVector(bool secondaryEnabled) {
   std::vector<IndividualTour*> individualsVec;
   for (int individual = 0; individual < POPULATION_TOTAL; ++individual) {
-    individualsVec.push_back(new IndividualTour(*this));
+    individualsVec.push_back(new IndividualTour(*this, secondaryEnabled));
   }
   return individualsVec;
 }
