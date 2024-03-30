@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <chrono>
 #include <iostream>
 
 #include "Darwin.h"
@@ -16,12 +17,17 @@ typedef std::vector<std::vector<std::string>> Csv2DVector;
 //---------------------------------------------------------
 int main()
 {
+
+    auto start = std::chrono::high_resolution_clock::now();
     std::cout << "Hello, World!" << std::endl;
     auto parsedCSV = parseCSV(CSV_PATH);
     // assert(parsedCSV.size() == POPULATION_TOTAL);
     auto DARWIN = new Darwin(parsedCSV);
     DARWIN->startEvolving();
     DARWIN->printBestIndividual();
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = end - start;
+    std::cout << "Elapsed time: " << elapsed.count() << " seconds" << std::endl;
     std::cout << "Bye, World!" << std::endl;
 
 

@@ -17,6 +17,7 @@ class IndividualTour {
 
   public:
   bool is_best = false;
+  bool is_ranker = false;
     void positionBasedCrossover(const IndividualTour* mother);
     explicit IndividualTour(Darwin &darwin);
     IndividualTour() = delete;
@@ -40,6 +41,7 @@ class IndividualTour {
   std::vector<int> crossover(IndividualTour& partner);
   void mutate();
   void mutate2();
+  void mutate3();
 
 };
 

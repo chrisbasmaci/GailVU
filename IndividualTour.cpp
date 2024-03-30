@@ -71,6 +71,10 @@ void IndividualTour::positionBasedCrossover(const IndividualTour* mother) {
     if(is_best) {
       return;
     }
+    if(is_ranker && getRandomDouble() < Ranker_Rate) {
+      return;
+    }
+
     auto mother_chromosome = mother->chromosome();
     auto father_chromosome = chromosome();
 
@@ -96,13 +100,12 @@ void IndividualTour::positionBasedCrossover(const IndividualTour* mother) {
 
 void IndividualTour::mutate() {
 ///Implement
-  if(getRandomDouble()<Mutation_Rate || is_best){
-    if(getRandomDouble()>Mutation_Rate){
-      goto here;
-    }
+  if(is_best){
     return;
   }
-  here:
+  if(is_ranker && getRandomDouble() < Ranker_Rate) {
+    return;
+  }
   auto start = getRandomNumber(_chromosome.size());
   auto end = getRandomNumber(_chromosome.size(),start);
   auto arr = _chromosome;
@@ -113,17 +116,17 @@ void IndividualTour::mutate() {
 }
 void IndividualTour::mutate2() {
   if (is_best) {
-    return; // Also ensure we have enough elements to perform a mutation
+    return;
   }
-  // if(is_ranker && getRandomDouble()<RankerRate){
-  //   return;
-  // }
+  if(is_ranker && getRandomDouble() < Ranker_Rate) {
+    return;
+  }
   if(getRandomDouble()<Mutation_Rate){
     return;
   }
   // Ensure start is strictly less than end to avoid length_error
-  auto start = getRandomNumber(_chromosome.size() - 1); // -1 ensures start is never the last index
-  auto end = start + 1 + getRandomNumber(_chromosome.size() - start - 1); // Ensure end is after start and within bounds
+  auto start = getRandomNumber(_chromosome.size());
+  auto end = start + 1 + getRandomNumber(_chromosome.size() - start);
 
   std::vector<int> temp(_chromosome.begin() + start, _chromosome.begin() + end);
 
@@ -133,5 +136,22 @@ void IndividualTour::mutate2() {
   _chromosome.insert(_chromosome.end(), temp.begin(), temp.end());
 }
 
+void IndividualTour::mutate3() {
+  if (is_best) {
+    return;
+  }
+  if(is_ranker && getRandomDouble() < Ranker_Rate) {
+    return;
+  }
+  if(getRandomDouble()<Mutation_Rate){
+    return;
+  }
+  //swap 2 random cities
+  auto swap_1 = getRandomNumber(_chromosome.size() );
+  auto swap_2 = getRandomNumber(_chromosome.size(),swap_1 );
 
+  std::swap(_chromosome[swap_1], _chromosome[swap_2]);
+
+
+}
 

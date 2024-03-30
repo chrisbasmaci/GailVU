@@ -102,7 +102,9 @@ void Darwin::setBestIndividual() {
   }
 
   // Define the number of top individuals you're interested in
-  int numberOfBestIndividuals = std::min(static_cast<int>(_population.size()), 60);
+  auto interested_total = _population.size()/5;
+  auto upcomer_total = _population.size()/1.5;
+  auto numberOfBestIndividuals = std::min(_population.size(), interested_total);
 
   // Partially sort the population to get the top 'numberOfBestIndividuals' based on fitness scores
   std::partial_sort(_population.begin(), _population.begin() + numberOfBestIndividuals, _population.end(),
@@ -114,12 +116,17 @@ void Darwin::setBestIndividual() {
   for (int i = 0; i < numberOfBestIndividuals; ++i) {
     _population.at(i)->is_best = true;
   }
+  for (int i = numberOfBestIndividuals; i < upcomer_total; ++i) {
+    _population.at(i)->is_ranker = true;
+  }
 }
 
-IndividualTour* Darwin::rouletteWheelSelection() {
+IndividualTour* Darwin::rouletteWheelSelection(IndividualTour* exclude) {
   double totalFitness = 0.0;
   for (auto& individual : _population) {
-    totalFitness += individual->fitness_score();
+    if (individual != exclude) {
+      totalFitness += individual->fitness_score();
+    }
   }
 
   // Generate a random number between 0 and total fitness
@@ -131,9 +138,11 @@ IndividualTour* Darwin::rouletteWheelSelection() {
   // Select an individual based on the random number
   double runningSum = 0.0;
   for (auto& individual : _population) {
-    runningSum += individual->fitness_score();
-    if (runningSum >= randomFitness) {
-      return individual;
+    if (individual != exclude) {
+      runningSum += individual->fitness_score();
+      if (runningSum >= randomFitness) {
+        return individual;
+      }
     }
   }
 
@@ -141,17 +150,36 @@ IndividualTour* Darwin::rouletteWheelSelection() {
   std::cout << "Returning the last individual due to rounding errors." << std::endl;
   return _population.back();
 }
-void Darwin::startEvolving() {
-  for (int i = 0; i < 1300; ++i) {
-    printBestIndividual();
-    conductSelection();
-    for (size_t idx = 0; idx < _population.size(); ++idx) {
-      _population[idx]->positionBasedCrossover(rouletteWheelSelection());
-      _population[idx]->mutate();
-      _population[idx]->mutate2();
-      _population[idx]->fitness();
-    }
-  }
-}
 
+void Darwin::startEvolving() {
+  std::ofstream file("../data/path_lengths.txt");
+
+  setBestIndividual();
+  auto old_best_population_score = _population[0]->fitness_score();
+  auto current_best_population_score = _population[0]->fitness_score();
+  int loopsdone = 0;
+  do {
+    for (int i = 0; i < 200; ++i) {
+      old_best_population_score =current_best_population_score;
+      printBestIndividual();
+      conductSelection();
+      for (size_t idx = 0; idx < _population.size(); ++idx) {
+        _population[idx]->positionBasedCrossover(rouletteWheelSelection(_population[idx]));
+        _population[idx]->mutate();
+        _population[idx]->mutate2();
+        _population[idx]->mutate3();
+        _population[idx]->fitness();
+      }
+      // Write the path length of the best individual to the file
+    }
+    loopsdone += 200;
+    setBestIndividual();
+    current_best_population_score = _population[0]->fitness_score();
+    std::cout << "Current difference score: " << current_best_population_score - old_best_population_score << std::endl;
+    file << current_best_population_score<< "," << loopsdone << std::endl;
+  }while (current_best_population_score - old_best_population_score > POPULATION_TOTAL/100);
+
+
+  file.close();
+}
 
