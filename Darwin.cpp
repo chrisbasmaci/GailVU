@@ -163,12 +163,12 @@ void Darwin::startEvolving() {
       old_best_population_score =current_best_population_score;
       printBestIndividual();
       conductSelection();
-      for (size_t idx = 0; idx < _population.size(); ++idx) {
-        _population[idx]->positionBasedCrossover(rouletteWheelSelection(_population[idx]));
-        _population[idx]->mutate();
-        _population[idx]->mutate2();
-        _population[idx]->mutate3();
-        _population[idx]->fitness();
+      for (auto & idx : _population) {
+        idx->positionBasedCrossover(rouletteWheelSelection(idx));
+        idx->mutate();
+        idx->mutate2();
+        idx->mutate3();
+        idx->fitness();
       }
 //      std::cout<<"diff: "<<diff<<std::endl;
       // Write the path length of the best individual to the file
