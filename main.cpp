@@ -22,7 +22,7 @@ int main()
     std::cout << "Hello, World!" << std::endl;
     auto parsedCSV = parseCSV(CSV_PATH);
     // assert(parsedCSV.size() == POPULATION_TOTAL);
-    auto DARWIN = new Darwin(parsedCSV,true);
+    auto DARWIN = new Darwin(parsedCSV, true);
     DARWIN->startEvolving();
     DARWIN->printBestIndividual();
     auto end = std::chrono::high_resolution_clock::now();

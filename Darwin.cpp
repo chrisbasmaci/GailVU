@@ -107,11 +107,10 @@ void Darwin::setBestIndividual() {
   auto numberOfBestIndividuals = std::min(_population.size(), interested_total);
 
   // Partially sort the population to get the top 'numberOfBestIndividuals' based on fitness scores
-  std::partial_sort(_population.begin(), _population.begin() + numberOfBestIndividuals, _population.end(),
-                    [](const IndividualTour* a, const IndividualTour* b) {
-                        return a->fitness_score() > b->fitness_score();
-                    });
-
+  std::sort(_population.begin(), _population.end(),
+            [](const auto& a, const auto& b) {
+              return a->fitness_score() > b->fitness_score();
+            });
   // Set is_best to true for these top individuals
   for (int i = 0; i < numberOfBestIndividuals; ++i) {
     _population.at(i)->is_best = true;
@@ -158,8 +157,9 @@ void Darwin::startEvolving() {
   auto old_best_population_score = _population[0]->fitness_score();
   auto current_best_population_score = _population[0]->fitness_score();
   int loopsdone = 0;
+  double diff = 0;
   do {
-    for (int i = 0; i < 200; ++i) {
+    for (int i = 0; i < 50; ++i) {
       old_best_population_score =current_best_population_score;
       printBestIndividual();
       conductSelection();
@@ -170,14 +170,19 @@ void Darwin::startEvolving() {
         _population[idx]->mutate3();
         _population[idx]->fitness();
       }
+//      std::cout<<"diff: "<<diff<<std::endl;
       // Write the path length of the best individual to the file
     }
-    loopsdone += 200;
+    loopsdone += 50;
     setBestIndividual();
+    diff = floor(old_best_population_score - current_best_population_score);
     current_best_population_score = _population[0]->fitness_score();
-    std::cout << "Current difference score: " << current_best_population_score - old_best_population_score << std::endl;
+//    std::cout << "Current difference score: " << current_best_population_score - old_best_population_score << std::endl;
     file << current_best_population_score<< "," << loopsdone << std::endl;
-  }while (current_best_population_score - old_best_population_score > POPULATION_TOTAL/100);
+  }while (current_best_population_score < 1.70);
+
+  std::cout << "==========================================="<< std::endl;
+  std::cout << "loopsdone: "<<loopsdone<< std::endl;
 
 
   file.close();
