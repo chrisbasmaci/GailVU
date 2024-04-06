@@ -99,12 +99,13 @@ void Darwin::setBestIndividual() {
   // Reset is_best to false for all individuals
   for (auto& ind : _population) {
     ind->is_best = false;
+    ind->is_ranker = false;
+    ind->is_mutated = false;
   }
 
   // Define the number of top individuals you're interested in
-  auto interested_total = _population.size()/5;
-  auto upcomer_total = _population.size()/1.5;
-  auto numberOfBestIndividuals = std::min(_population.size(), interested_total);
+  auto interested_total = 10;
+  auto upcomer_total = 28;
 
   // Partially sort the population to get the top 'numberOfBestIndividuals' based on fitness scores
   std::sort(_population.begin(), _population.end(),
@@ -112,10 +113,11 @@ void Darwin::setBestIndividual() {
               return a->fitness_score() > b->fitness_score();
             });
   // Set is_best to true for these top individuals
-  for (int i = 0; i < numberOfBestIndividuals; ++i) {
+
+  for (int i = 0; i < interested_total; ++i) {
     _population.at(i)->is_best = true;
   }
-  for (int i = numberOfBestIndividuals; i < upcomer_total; ++i) {
+  for (int i = interested_total; i < upcomer_total; ++i) {
     _population.at(i)->is_ranker = true;
   }
 }
@@ -174,7 +176,7 @@ void Darwin::startEvolving() {
       // Write the path length of the best individual to the file
     }
     loopsdone += 50;
-    setBestIndividual();
+//    setBestIndividual();
     diff = floor(old_best_population_score - current_best_population_score);
     current_best_population_score = _population[0]->fitness_score();
 //    std::cout << "Current difference score: " << current_best_population_score - old_best_population_score << std::endl;

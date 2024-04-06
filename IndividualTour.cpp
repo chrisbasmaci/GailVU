@@ -100,7 +100,9 @@ void IndividualTour::positionBasedCrossover(const IndividualTour* mother) {
 }
 
 void IndividualTour::mutate() {
-///Implement
+  if(is_mutated){
+    return;
+  }
   if(is_best){
     return;
   }
@@ -111,11 +113,13 @@ void IndividualTour::mutate() {
   auto end = getRandomNumber(_chromosome.size(),start);
   auto arr = _chromosome;
   std::reverse(arr.begin() + start, arr.begin() + end + 1);
-
-  //------------------
+  is_mutated = true;
 
 }
 void IndividualTour::mutate2() {
+  if(is_mutated){
+    return;
+  }
   if (is_best) {
     return;
   }
@@ -135,9 +139,13 @@ void IndividualTour::mutate2() {
 
   // Append the segment to the end of the vector
   _chromosome.insert(_chromosome.end(), temp.begin(), temp.end());
+  is_mutated = true;
 }
 
 void IndividualTour::mutate3() {
+  if(is_mutated){
+    return;
+  }
   if (is_best) {
     return;
   }
@@ -153,6 +161,6 @@ void IndividualTour::mutate3() {
 
   std::swap(_chromosome[swap_1], _chromosome[swap_2]);
 
-
+  is_mutated = true;
 }
 

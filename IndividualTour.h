@@ -20,6 +20,7 @@ class IndividualTour {
   public:
     bool is_best = false;
     bool is_ranker = false;
+    bool is_mutated= false;
     void positionBasedCrossover(const IndividualTour* mother);
     explicit IndividualTour(Darwin &darwin, bool secondaryEnabled = false);
     IndividualTour() = delete;
