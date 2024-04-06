@@ -246,6 +246,7 @@ void Darwin::runTest(float populationSize, float bestAmount, float rankerAmount,
 
   setDefaults(populationSize, bestAmount, rankerAmount, mutationRate, rankerRate);
   _population = constructIndividualTourVector(true);
+  std::cout<<"Starting Evolution:"<<std::endl;
   this->startEvolving();
   this->printBestIndividual();
   auto end = std::chrono::high_resolution_clock::now();

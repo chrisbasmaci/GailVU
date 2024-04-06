@@ -18,20 +18,22 @@ typedef std::vector<std::vector<std::string>> Csv2DVector;
 //---------------------------------------------------------
 int main()
 {
-  auto parsedCSV = parseCSV(CSV_PATH);
-  auto DARWIN = new Darwin(parsedCSV,true);
-  auto population_size = 40;
-  auto best_individuals = population_size/3;
-  //ranker total must be smaller than population size
-  auto ranker_total = best_individuals*2;
-  auto mutation_rate = 0.35;
-  auto ranker_rate = 0.5;
+    auto parsedCSV = parseCSV(CSV_PATH);
+    auto DARWIN = new Darwin(parsedCSV,true);
+    auto population_size = 40;
+    auto best_individuals = population_size/3;
+    //ranker total must be smaller than population size
+    auto ranker_total = best_individuals*2;
+    auto mutation_rate = 0.35;
+    auto ranker_rate = 0.5;
 
 //  DARWIN->runTest(population_size, best_individuals, ranker_total, 0.35, 0.5);
-  DARWIN->runTest(40, 15, 26, 0.25, 0.5);
+    std::cout<<"Starting Programme"<<std::endl;
+    DARWIN->runTest(40, 15, 26, 0.25, 0.5);
+    std::cout<<"Ending Programme"<<std::endl;
 
 
 
-  delete DARWIN;
-  return 0;
+    delete DARWIN;
+    return 0;
 }
