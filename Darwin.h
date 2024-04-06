@@ -6,6 +6,7 @@
 #include "City.h"
 #include <iostream>
 #include <vector>
+#include <algorithm>
 typedef std::vector<std::vector<std::string>> Csv2DVector;
 class IndividualTour;
 #define POPULATION_TOTAL 40
