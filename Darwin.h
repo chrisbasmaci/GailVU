@@ -8,10 +8,13 @@
 #include <vector>
 typedef std::vector<std::vector<std::string>> Csv2DVector;
 class IndividualTour;
-#define POPULATION_TOTAL 40
-#define Mutation_Rate 0.35
-#define Ranker_Rate 0.5
+
 class Darwin {
+  float POPULATION_TOTAL;
+  float BEST_TOTAL ;
+  float UPCOMER_PERCENT;
+  float Mutation_Rate;
+  float Ranker_Rate;
   Csv2DVector _parsedCSV;
   std::vector<City*> _cities;
   std::vector<IndividualTour*> _population;
@@ -34,6 +37,19 @@ public:
     return _population;
   }
   void printFirstIndividual();
+
+  float getPopulationTotal() const;
+
+  float getBestPercent() const;
+
+  float getUpcomerPercent() const;
+
+  float getMutationRate() const;
+
+  float getRankerRate() const;
+  void runTest(float populationSize, float bestAmount, float rankerAmount, float mutationRate, float rankerRate);
+
+  void setDefaults(float populationTotal, float bestPercent, float upcomerPercent, float mutationRate, float rankerRate);
 };
 
 #endif // DARWIN_H

@@ -10,6 +10,7 @@
 #define CSV_PATH "../data/european-cities.csv"
 #define CSV_PATH_Test "../data/testCities.csv"
 
+
 ///TODO need to change this to environment variable instead I think
 typedef std::vector<std::vector<std::string>> Csv2DVector;
 ///TODO need to add destructors in Darwin
@@ -17,21 +18,26 @@ typedef std::vector<std::vector<std::string>> Csv2DVector;
 //---------------------------------------------------------
 int main()
 {
+  auto parsedCSV = parseCSV(CSV_PATH);
+  auto DARWIN = new Darwin(parsedCSV,true);
+  auto population_size = 40;
+  auto best_individuals = population_size/3;
+  //ranker total must be smaller than population size
+  auto ranker_total = best_individuals*2;
+  auto mutation_rate = 0.35;
+  auto ranker_rate = 0.5;
 
-    auto start = std::chrono::high_resolution_clock::now();
-    std::cout << "Hello, World!" << std::endl;
-    auto parsedCSV = parseCSV(CSV_PATH);
-    // assert(parsedCSV.size() == POPULATION_TOTAL);
-    auto DARWIN = new Darwin(parsedCSV,true);
-    DARWIN->startEvolving();
-    DARWIN->printBestIndividual();
-    auto end = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> elapsed = end - start;
-    std::cout << "Elapsed time: " << elapsed.count() << " seconds" << std::endl;
-    std::cout << "Bye, World!" << std::endl;
+//  DARWIN->runTest(population_size, best_individuals, ranker_total, 0.35, 0.5);
+  DARWIN->runTest(40, 8, 26, 0.35, 0.5);
+  DARWIN->runTest(40, 8, 26, 0.35, 0.5);
+  DARWIN->runTest(40, 8, 26, 0.35, 0.5);
+  DARWIN->runTest(40, 8, 26, 0.35, 0.5);
+  DARWIN->runTest(40, 8, 26, 0.35, 0.5);
+  DARWIN->runTest(40, 8, 26, 0.35, 0.5);
+  DARWIN->runTest(40, 8, 26, 0.35, 0.5);
 
-    // auto DARWIN2 = new Darwin(parsedCSV,true);
-    // DARWIN2->startEvolving();
-    // DARWIN2->printBestIndividual();
-    return 0;
+
+
+  delete DARWIN;
+  return 0;
 }

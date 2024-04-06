@@ -72,7 +72,7 @@ void IndividualTour::positionBasedCrossover(const IndividualTour* mother) {
     if(is_best) {
       return;
     }
-    if(is_ranker && getRandomDouble() < Ranker_Rate) {
+    if(is_ranker && getRandomDouble() < _darwin->getRankerRate()) {
       return;
     }
 
@@ -95,34 +95,40 @@ void IndividualTour::positionBasedCrossover(const IndividualTour* mother) {
       father_chromosome.erase(father_chromosome.begin());
     }
   }
-  _chromosome = offspring; // Update the father's chromosome to the new offspring
+  _chromosome = offspring;
 
 }
 
 void IndividualTour::mutate() {
-///Implement
+
+  if(is_mutated){
+    return;
+  }
+
   if(is_best){
     return;
   }
-  if(is_ranker && getRandomDouble() < Ranker_Rate) {
+  if(is_ranker && getRandomDouble() < _darwin->getRankerRate()) {
     return;
   }
   auto start = getRandomNumber(_chromosome.size());
   auto end = getRandomNumber(_chromosome.size(),start);
   auto arr = _chromosome;
   std::reverse(arr.begin() + start, arr.begin() + end + 1);
-
-  //------------------
+  is_mutated = true;
 
 }
 void IndividualTour::mutate2() {
+  if(is_mutated){
+    return;
+  }
   if (is_best) {
     return;
   }
-  if(is_ranker && getRandomDouble() < Ranker_Rate) {
+  if(is_ranker && getRandomDouble() < _darwin->getRankerRate()) {
     return;
   }
-  if(getRandomDouble()<Mutation_Rate){
+  if(getRandomDouble()<_darwin->getMutationRate()){
     return;
   }
   // Ensure start is strictly less than end to avoid length_error
@@ -138,13 +144,16 @@ void IndividualTour::mutate2() {
 }
 
 void IndividualTour::mutate3() {
+  if(is_mutated){
+    return;
+  }
   if (is_best) {
     return;
   }
-  if(is_ranker && getRandomDouble() < Ranker_Rate) {
+  if(is_ranker && getRandomDouble() < _darwin->getRankerRate()) {
     return;
   }
-  if(getRandomDouble()<Mutation_Rate){
+  if(getRandomDouble()<_darwin->getMutationRate()){
     return;
   }
   //swap 2 random cities
@@ -153,6 +162,7 @@ void IndividualTour::mutate3() {
 
   std::swap(_chromosome[swap_1], _chromosome[swap_2]);
 
+  is_mutated = true;
 
 }
 

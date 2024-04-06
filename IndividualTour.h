@@ -18,6 +18,7 @@ class IndividualTour {
     Darwin* _darwin;
 
   public:
+    bool is_mutated = false;
     bool is_best = false;
     bool is_ranker = false;
     void positionBasedCrossover(const IndividualTour* mother);
