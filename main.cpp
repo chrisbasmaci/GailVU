@@ -28,13 +28,7 @@ int main()
   auto ranker_rate = 0.5;
 
 //  DARWIN->runTest(population_size, best_individuals, ranker_total, 0.35, 0.5);
-  DARWIN->runTest(40, 8, 26, 0.35, 0.5);
-  DARWIN->runTest(40, 8, 26, 0.35, 0.5);
-  DARWIN->runTest(40, 8, 26, 0.35, 0.5);
-  DARWIN->runTest(40, 8, 26, 0.35, 0.5);
-  DARWIN->runTest(40, 8, 26, 0.35, 0.5);
-  DARWIN->runTest(40, 8, 26, 0.35, 0.5);
-  DARWIN->runTest(40, 8, 26, 0.35, 0.5);
+  DARWIN->runTest(40, 15, 26, 0.25, 0.5);
 
 
 

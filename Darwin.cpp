@@ -171,7 +171,7 @@ void Darwin::startEvolving() {
         Mutation_Rate = origMutationRate;
       }
       old_best_population_distance = current_best_population_distance;
-//      printBestIndividual();
+      printBestIndividual();
       conductSelection();
       for (size_t idx = 0; idx < _population.size(); ++idx) {
         _population[idx]->positionBasedCrossover(rouletteWheelSelection(_population[idx]));
