@@ -184,7 +184,7 @@ void Darwin::startEvolving() {
   auto origMutationRate = Mutation_Rate;
   bool ishigh = false;
   do {
-    for (int i = 0; i < 100; ++i) {
+    for (int i = 0; i < 50; ++i) {
       old_best_population_distance = current_best_population_distance;
 //      printBestIndividual();
       conductSelection();
