@@ -3,3 +3,7 @@ Paris,48.8566,2.3522
 Madrid,40.4168,-3.7038
 Berlin,52.52,13.405
 Rome,41.9028,12.4964
+
+_city_names = Paris, Madrid, Berlin, Rome
+winner = [0,2,1,3]
+Paris Berlin Madrid Rome

@@ -29,7 +29,24 @@ int main()
 
 //  DARWIN->runTest(population_size, best_individuals, ranker_total, 0.35, 0.5);
     std::cout<<"Starting Programme"<<std::endl;
-    DARWIN->runTest(40, 15, 26, 0.25, 0.5, true);
+    DARWIN->runTest(45, 17, 26, 0.35, 0.5, true);
+    DARWIN->runTest(45, 17, 26, 0.35, 0.5, true);
+    DARWIN->runTest(45, 17, 26, 0.35, 0.5, true);
+    DARWIN->runTest(45, 17, 26, 0.35, 0.5, true);
+    DARWIN->runTest(45, 17, 26, 0.35, 0.5, true);
+    DARWIN->runTest(45, 17, 26, 0.35, 0.5, true);
+    DARWIN->runTest(45, 17, 26, 0.35, 0.5, true);
+    DARWIN->runTest(45, 17, 26, 0.35, 0.5, true);
+    DARWIN->runTest(45, 17, 26, 0.35, 0.5, true);
+    DARWIN->runTest(45, 17, 26, 0.35, 0.5, true);
+    DARWIN->runTest(45, 17, 26, 0.35, 0.5, true);
+    DARWIN->runTest(45, 17, 26, 0.35, 0.5, true);
+    DARWIN->runTest(45, 17, 26, 0.35, 0.5, true);
+    DARWIN->runTest(45, 17, 26, 0.35, 0.5, true);
+    DARWIN->runTest(45, 17, 26, 0.35, 0.5, true);
+    DARWIN->runTest(45, 17, 26, 0.35, 0.5, true);
+    DARWIN->runTest(45, 17, 26, 0.35, 0.5, true);
+    DARWIN->runTest(45, 17, 26, 0.35, 0.5, true);
     std::cout<<"Ending Programme"<<std::endl;
 
 

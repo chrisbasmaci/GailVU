@@ -54,8 +54,26 @@ void Darwin::printBestIndividual() {
     bestIndividual = ind->fitness_score() > bestIndividual->fitness_score() ? ind : bestIndividual;
   }
   std::cout << "Path Length: ";
-  std::cout << bestIndividual->path_length();
-  std::cout << " Score: "<<bestIndividual->fitness_score()<< std::endl;
+  std::cout << bestIndividual->path_length()<<std::endl;
+  std::cout << "Score: "<<bestIndividual->fitness_score()<< std::endl;
+
+  ///TODO shuffle _city_names with the order from bestIndividual->chromosome()
+  //how to get winner order bestIndividual->chromosome()
+  // Vector to hold the ordered city names
+    std::vector<std::string> ordered_cities(_city_names.size());
+
+    // Reorder the cities based on the order vector
+    for (size_t i = 0; i < bestIndividual->chromosome().size(); ++i) {
+        ordered_cities[i] = _city_names[bestIndividual->chromosome()[i]];
+    }
+    // Print the ordered city names
+    for (const auto& city : ordered_cities) {
+        std::cout << city << " ";
+    }
+    std::cout<<std::endl;
+
+
+
 
 }
 
@@ -168,7 +186,7 @@ void Darwin::startEvolving() {
   do {
     for (int i = 0; i < 100; ++i) {
       old_best_population_distance = current_best_population_distance;
-      printBestIndividual();
+//      printBestIndividual();
       conductSelection();
       for (size_t idx = 0; idx < _population.size(); ++idx) {
         _population[idx]->positionBasedCrossover(rouletteWheelSelection(_population[idx]));
@@ -204,7 +222,7 @@ void Darwin::startEvolving() {
 //      Mutation_Rate = origMutationRate;
 //    }
 
-//    file << current_best_population_distance << "," << loopsdone << std::endl;
+    file << current_best_population_distance << "," << loopsdone << std::endl;
   }while (population()[0]->path_length() >40000);
 
   std::cout << "==========================================="<< std::endl;
