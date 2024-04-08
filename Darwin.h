@@ -47,7 +47,8 @@ public:
   float getMutationRate() const;
 
   float getRankerRate() const;
-  void runTest(float populationSize, float bestAmount, float rankerAmount, float mutationRate, float rankerRate);
+
+  void runTest(float populationSize, float bestAmount, float rankerAmount, float mutationRate, float rankerRate, bool secondaryEnabled);
 
   void setDefaults(float populationTotal, float bestPercent, float upcomerPercent, float mutationRate, float rankerRate);
 };

@@ -8,7 +8,6 @@
 #include "Helpers.cpp"
 #include "Darwin.h"
 class Darwin;
-
 class IndividualTour {
     std::vector<int> _chromosome{};
     float _path_length= 0;
@@ -21,6 +20,7 @@ class IndividualTour {
     bool is_mutated = false;
     bool is_best = false;
     bool is_ranker = false;
+
     void positionBasedCrossover(const IndividualTour* mother);
     explicit IndividualTour(Darwin &darwin, bool secondaryEnabled = false);
     IndividualTour() = delete;

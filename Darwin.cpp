@@ -7,8 +7,7 @@
 typedef std::vector<std::vector<std::string>> Csv2DVector;
 Darwin::Darwin(Csv2DVector parsedCSV, bool secondaryEnabled ) : _parsedCSV(std::move(parsedCSV)) {
   _cities = constructCityVector(_parsedCSV);
-  _population = constructIndividualTourVector(secondaryEnabled);
-
+//  _population = constructIndividualTourVector(secondaryEnabled);
 }
 
 // Definition of doSomething member function
@@ -157,7 +156,6 @@ IndividualTour* Darwin::rouletteWheelSelection(IndividualTour* exclude) {
 
 void Darwin::startEvolving() {
   std::ofstream file("../data/path_lengths.txt");
-
   setBestIndividual();
   auto old_best_population_distance = _population[0]->path_length();
   auto current_best_population_distance = _population[0]->path_length();
@@ -240,19 +238,17 @@ float Darwin::getRankerRate() const {
 void Darwin::setDefaults(float populationTotal, float bestPercent, float upcomerPercent, float mutationRate, float rankerRate){
   POPULATION_TOTAL = populationTotal; BEST_TOTAL = bestPercent; UPCOMER_PERCENT = upcomerPercent;Mutation_Rate=mutationRate, Ranker_Rate = rankerRate;
 }
-void Darwin::runTest(float populationSize, float bestAmount, float rankerAmount, float mutationRate, float rankerRate) {
+void Darwin::runTest(float populationSize, float bestAmount, float rankerAmount, float mutationRate, float rankerRate, bool secondaryEnabled) {
   auto start = std::chrono::high_resolution_clock::now();
   std::for_each(_population.begin(), _population.end(), [](IndividualTour* ind) { delete ind; });
 
   setDefaults(populationSize, bestAmount, rankerAmount, mutationRate, rankerRate);
-  _population = constructIndividualTourVector(true);
-  std::cout<<"Starting Evolution:"<<std::endl;
+  _population = constructIndividualTourVector(secondaryEnabled);
   this->startEvolving();
   this->printBestIndividual();
   auto end = std::chrono::high_resolution_clock::now();
   std::chrono::duration<double> elapsed = end - start;
 
-  std::cout << "Parameters used:" << std::endl;
   std::cout << populationSize;
   std::cout << " || " << bestAmount;
   std::cout << "|| " << rankerAmount;
