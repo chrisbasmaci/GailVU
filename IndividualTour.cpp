@@ -128,9 +128,11 @@ void IndividualTour::mutate2() {
   if(is_ranker && getRandomDouble() < _darwin->getRankerRate()) {
     return;
   }
+
   if(getRandomDouble()<_darwin->getMutationRate()){
     return;
   }
+
   // Ensure start is strictly less than end to avoid length_error
   auto start = getRandomNumber(_chromosome.size());
   auto end = start + 1 + getRandomNumber(_chromosome.size() - start);
@@ -142,6 +144,7 @@ void IndividualTour::mutate2() {
   // Append the segment to the end of the vector
   _chromosome.insert(_chromosome.end(), temp.begin(), temp.end());
 }
+
 
 void IndividualTour::mutate3() {
   if(is_mutated){

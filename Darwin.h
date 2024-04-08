@@ -16,6 +16,7 @@ class Darwin {
   float Mutation_Rate;
   float Ranker_Rate;
   Csv2DVector _parsedCSV;
+  std::vector<std::string> _city_names;
   std::vector<City*> _cities;
   std::vector<IndividualTour*> _population;
   std::vector<IndividualTour*> constructIndividualTourVector(bool secondaryEnabled);

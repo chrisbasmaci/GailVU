@@ -14,11 +14,13 @@ Darwin::Darwin(Csv2DVector parsedCSV, bool secondaryEnabled ) : _parsedCSV(std::
 std::vector<City*> Darwin::constructCityVector(const Csv2DVector& data2Dvec) {
   std::vector<City*> individualsVec;
   for (auto line: data2Dvec) {
-    std::string countryName = line.at(0);
+
+    std::string cityName = line.at(0);
+    _city_names.emplace_back(line.at(0).c_str());
     float latitude = atof(line.at(1).c_str());
     float longitude = atof(line.at(2).c_str());
 
-    auto individual = new City(countryName, latitude, longitude);
+    auto individual = new City(cityName, latitude, longitude);
     individualsVec.push_back(individual);
   }
 
@@ -165,9 +167,6 @@ void Darwin::startEvolving() {
   bool ishigh = false;
   do {
     for (int i = 0; i < 100; ++i) {
-      if(current_best_population_distance > 55000){
-        Mutation_Rate = origMutationRate;
-      }
       old_best_population_distance = current_best_population_distance;
       printBestIndividual();
       conductSelection();
@@ -179,7 +178,7 @@ void Darwin::startEvolving() {
         _population[idx]->fitness();
       }
     }
-    Mutation_Rate = origMutationRate;
+//    Mutation_Rate = origMutationRate;
     loopsdone += 50;
     setBestIndividual();
     current_best_population_distance = _population[0]->path_length();
