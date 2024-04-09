@@ -56,7 +56,7 @@ int main(int argc, const char **argv)      //argc = 4(/5), argv = (0 is the file
     auto DARWIN = new Darwin(parsedCSV, secondaryEnabled);
 
     std::cout<<"Starting Program"<<std::endl;
-    DARWIN->runTest(45, 17, 26, 0.35, 0.5, limit, file_path_output, secondaryEnabled);
+    DARWIN->runTest(45, 22, 28, 0.4, 0.6, limit, file_path_output, secondaryEnabled);
     std::cout<<"Ending Program"<<std::endl;
 
     delete DARWIN;
