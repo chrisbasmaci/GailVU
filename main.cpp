@@ -73,10 +73,10 @@ int main(int argc, const char **argv)      //argc = 4(/5), argv = (0 is the file
     auto ranker_rate = 0.5;
 
 //  DARWIN->runTest(population_size, best_individuals, ranker_total, 0.35, 0.5);
-    std::cout<<"Starting Programme"<<std::endl;
+    std::cout<<"Starting Program"<<std::endl;
     DARWIN->runTest(45, 17, 26, 0.35, 0.5, limit, file_path_output, secondaryEnabled);
 
-    std::cout<<"Ending Programme"<<std::endl;
+    std::cout<<"Ending Program"<<std::endl;
 
     delete DARWIN;
     return 0;

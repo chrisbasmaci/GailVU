@@ -275,9 +275,11 @@ void Darwin::runTest(float populationSize, float bestAmount, float rankerAmount,
 
   std::cout << populationSize;
   std::cout << " || " << bestAmount;
-  std::cout << "|| " << rankerAmount;
-  std::cout << "|| " << mutationRate;
-  std::cout << "|| " << rankerRate << std::endl;
+  std::cout << " || " << rankerAmount;
+  std::cout << " || " << mutationRate;
+  std::cout << " || " << rankerRate << std::endl;
+  if (secondaryEnabled)
+      std::cout << "used additional criteria" << std::endl;
 
   std::cout << "Elapsed time: " << elapsed.count() << " seconds" << std::endl;
 }
