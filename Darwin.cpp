@@ -48,7 +48,7 @@ void Darwin::printFirstIndividual() {
 
 
 }
-void Darwin::printBestIndividual() {
+void Darwin::printBestIndividual(std::string& output_file) {
   IndividualTour* bestIndividual = _population.at(0);
   for (auto ind : _population) {
     bestIndividual = ind->fitness_score() > bestIndividual->fitness_score() ? ind : bestIndividual;
@@ -56,6 +56,12 @@ void Darwin::printBestIndividual() {
   std::cout << "Path Length: ";
   std::cout << bestIndividual->path_length()<<std::endl;
   std::cout << "Score: "<<bestIndividual->fitness_score()<< std::endl;
+
+  std::ofstream file(output_file);
+
+  if (!file.is_open()) {
+      std::cerr << "Error opening file" << std::endl;
+  }
 
   ///TODO shuffle _city_names with the order from bestIndividual->chromosome()
   //how to get winner order bestIndividual->chromosome()
@@ -68,11 +74,12 @@ void Darwin::printBestIndividual() {
     }
     // Print the ordered city names
     for (const auto& city : ordered_cities) {
-        std::cout << city << " ";
+        //std::cout << city << std::endl;
+        file << city << std::endl;
+        file.flush();                           //needed?
     }
+    file.close();
     std::cout<<std::endl;
-
-
 
 
 }
@@ -174,7 +181,7 @@ IndividualTour* Darwin::rouletteWheelSelection(IndividualTour* exclude) {
   return _population.back();
 }
 
-void Darwin::startEvolving() {
+void Darwin::startEvolving(float limit) {
   std::ofstream file("../data/path_lengths.txt");
   setBestIndividual();
   auto old_best_population_distance = _population[0]->path_length();
@@ -223,7 +230,7 @@ void Darwin::startEvolving() {
 //    }
 
     file << current_best_population_distance << "," << loopsdone << std::endl;
-  }while (population()[0]->path_length() >40000);
+  }while (population()[0]->path_length() > limit);
 
   std::cout << "==========================================="<< std::endl;
   std::cout << "loopsdone: "<<loopsdone<< std::endl;
@@ -255,14 +262,14 @@ float Darwin::getRankerRate() const {
 void Darwin::setDefaults(float populationTotal, float bestPercent, float upcomerPercent, float mutationRate, float rankerRate){
   POPULATION_TOTAL = populationTotal; BEST_TOTAL = bestPercent; UPCOMER_PERCENT = upcomerPercent;Mutation_Rate=mutationRate, Ranker_Rate = rankerRate;
 }
-void Darwin::runTest(float populationSize, float bestAmount, float rankerAmount, float mutationRate, float rankerRate, bool secondaryEnabled) {
+void Darwin::runTest(float populationSize, float bestAmount, float rankerAmount, float mutationRate, float rankerRate, float limit, std::string &output_file, bool secondaryEnabled) {
   auto start = std::chrono::high_resolution_clock::now();
   std::for_each(_population.begin(), _population.end(), [](IndividualTour* ind) { delete ind; });
 
   setDefaults(populationSize, bestAmount, rankerAmount, mutationRate, rankerRate);
   _population = constructIndividualTourVector(secondaryEnabled);
-  this->startEvolving();
-  this->printBestIndividual();
+  this->startEvolving(limit);
+  this->printBestIndividual(output_file);
   auto end = std::chrono::high_resolution_clock::now();
   std::chrono::duration<double> elapsed = end - start;
 

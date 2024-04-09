@@ -22,11 +22,11 @@ class Darwin {
   std::vector<IndividualTour*> constructIndividualTourVector(bool secondaryEnabled);
 
 public:
-  explicit Darwin(Csv2DVector parsedCSV, bool secondaryEnabled = false);
-  void startEvolving();
+  explicit Darwin(Csv2DVector parsedCSV, bool secondaryEnabled);
+  void startEvolving(float limit);
   IndividualTour* rouletteWheelSelection(IndividualTour* exclude = nullptr);
   void conductSelection();
-  void printBestIndividual();
+  void printBestIndividual(std::string &output_file);
   std::vector<City*> constructCityVector(const Csv2DVector& data2Dvec);
   void setBestIndividual();
 
@@ -49,7 +49,7 @@ public:
 
   float getRankerRate() const;
 
-  void runTest(float populationSize, float bestAmount, float rankerAmount, float mutationRate, float rankerRate, bool secondaryEnabled);
+  void runTest(float populationSize, float bestAmount, float rankerAmount, float mutationRate, float rankerRate, float limit, std::string &output_file, bool secondaryEnabled);
 
   void setDefaults(float populationTotal, float bestPercent, float upcomerPercent, float mutationRate, float rankerRate);
 };
