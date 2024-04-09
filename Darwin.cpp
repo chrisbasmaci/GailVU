@@ -118,6 +118,9 @@ void Darwin::setBestIndividual() {
   auto old_best_individual = _population[0];
   old_best_individual->is_best = true;
   for (size_t i = 1; i < BEST_TOTAL; ++i) {
+    if(old_best_individual == _population[i]){
+      continue;
+    }
     old_best_individual = _population[i];
     _population[i]->is_best = true;
   }
