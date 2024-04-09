@@ -1,58 +1,53 @@
 //
 // Created by chris on 29.03.24.
 //
-#include "City.h"
-#include <algorithm> // For std::shuffle
+
+#include <algorithm>
 #include <random>
-
-#include "IndividualTour.h"
-
 #include <assert.h>
 
+#include "City.h"
+#include "IndividualTour.h"
 #include "Darwin.h"
 
 IndividualTour::IndividualTour(Darwin &darwin, bool secondaryEnabled) : _darwin(&darwin),_secondaryEnabled(secondaryEnabled) {
   std::random_device rd;
   std::mt19937 g(rd());
 
-  // Initialize chromosome
+  // initialize chromosome
   for (int i = 0; i < _darwin->cities().size(); ++i) {
     _chromosome.push_back(i);
   }
-  // Shuffle the chromosome
+  // shuffle the chromosome
   std::shuffle(_chromosome.begin(), _chromosome.end(), g);
   fitness();
-
 }
 
-// Haversine formula implementation to calculate distance between two points on the Earth
 float IndividualTour::calculateDistance(float lat1, float lon1, float lat2, float lon2) {
-  // Earth's radius in kilometers
+  // earth's radius in kilometers
   constexpr float R = 6371.0f;
 
-  // Convert latitude and longitude from degrees to radians
+  // convert latitude and longitude from degrees to radians
   float phi1 = lat1 * static_cast<float>(M_PI) / 180.0f;
   float phi2 = lat2 * static_cast<float>(M_PI) / 180.0f;
   float deltaPhi = (lat2 - lat1) * static_cast<float>(M_PI) / 180.0f;
   float deltaLambda = (lon2 - lon1) * static_cast<float>(M_PI) / 180.0f;
 
-  // Apply Haversine formula
+  // apply Haversine formula
   float a = std::sin(deltaPhi / 2) * std::sin(deltaPhi / 2) +
             std::cos(phi1) * std::cos(phi2) *
             std::sin(deltaLambda / 2) * std::sin(deltaLambda / 2);
   float c = 2 * std::atan2(std::sqrt(a), std::sqrt(1 - a));
 
-  float distance = R * c; // Distance in kilometers
-  return std::abs(distance); // Ensure non-negative result
-
+  float distance = R * c; // distance in kilometers
+  return std::abs(distance); // ensure non-negative result
 }
 
 float IndividualTour::calculatePathLength() {
-  // std::cout <<coord_.first <<"||"<<coord_.second <<std::endl;
   float distance = 0.0;
   for (size_t i = 0; i < _chromosome.size(); ++i) {
     const City *currentCity = _darwin->cities()[_chromosome[i]];
-    const City *nextCity = _darwin->cities()[_chromosome[(i + 1) % _chromosome.size()]]; // Loop back to start
+    const City *nextCity = _darwin->cities()[_chromosome[(i + 1) % _chromosome.size()]]; // loop back to start
 
     distance += calculateDistance(currentCity->coord().first, currentCity->coord().second,
                                     nextCity->coord().first, nextCity->coord().second);
@@ -65,7 +60,6 @@ float IndividualTour::calculatePathLength() {
 
 void IndividualTour::fitness() {
   _path_length = calculatePathLength();
-
 }
 
 void IndividualTour::positionBasedCrossover(const IndividualTour* mother) {
@@ -96,15 +90,12 @@ void IndividualTour::positionBasedCrossover(const IndividualTour* mother) {
     }
   }
   _chromosome = offspring;
-
 }
 
 void IndividualTour::mutate() {
-
   if(is_mutated){
     return;
   }
-
   if(is_best){
     return;
   }
@@ -116,8 +107,8 @@ void IndividualTour::mutate() {
   auto arr = _chromosome;
   std::reverse(arr.begin() + start, arr.begin() + end + 1);
   is_mutated = true;
-
 }
+
 void IndividualTour::mutate2() {
   if(is_mutated){
     return;
@@ -128,12 +119,11 @@ void IndividualTour::mutate2() {
   if(is_ranker && getRandomDouble() < _darwin->getRankerRate()) {
     return;
   }
-
   if(getRandomDouble()<_darwin->getMutationRate()){
     return;
   }
 
-  // Ensure start is strictly less than end to avoid length_error
+  // ensure start is strictly less than end to avoid length_error
   auto start = getRandomNumber(_chromosome.size());
   auto end = start + 1 + getRandomNumber(_chromosome.size() - start);
 
@@ -141,10 +131,9 @@ void IndividualTour::mutate2() {
 
   _chromosome.erase(_chromosome.begin() + start, _chromosome.begin() + end);
 
-  // Append the segment to the end of the vector
+  // append segment to the end of the vector
   _chromosome.insert(_chromosome.end(), temp.begin(), temp.end());
 }
-
 
 void IndividualTour::mutate3() {
   if(is_mutated){
@@ -159,13 +148,12 @@ void IndividualTour::mutate3() {
   if(getRandomDouble()<_darwin->getMutationRate()){
     return;
   }
-  //swap 2 random cities
+
+  // swap 2 random cities
   auto swap_1 = getRandomNumber(_chromosome.size() );
   auto swap_2 = getRandomNumber(_chromosome.size(),swap_1 );
 
   std::swap(_chromosome[swap_1], _chromosome[swap_2]);
 
   is_mutated = true;
-
 }
-

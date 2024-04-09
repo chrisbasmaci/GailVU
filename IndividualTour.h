@@ -4,10 +4,14 @@
 
 #ifndef INDIVIDUALTOUR_H
 #define INDIVIDUALTOUR_H
+
 #include <vector>
+
 #include "Helpers.cpp"
 #include "Darwin.h"
+
 class Darwin;
+
 class IndividualTour {
     std::vector<int> _chromosome{};
     float _path_length= 0;
@@ -39,9 +43,7 @@ class IndividualTour {
         return totalPathScore;
       }
       float longestDistScore = 100000 / _longest_distance;
-
-      // Combine the scores. Adjust the weighting as needed.
-      float lambda = 0.4; // Weighting factor
+      float lambda = 0.4;
       return lambda * totalPathScore + (1 - lambda) * longestDistScore;
     }
 
@@ -49,13 +51,9 @@ class IndividualTour {
 
   float calculateDistance(float lat1, float lon1, float lat2, float lon2);
   void fitness();
-  std::vector<int> crossover(IndividualTour& partner);
   void mutate();
   void mutate2();
   void mutate3();
-
 };
-
-
 
 #endif //INDIVIDUALTOUR_H

@@ -1,11 +1,16 @@
 // Darwin.h
+
 #ifndef DARWIN_H
 #define DARWIN_H
+
 #include <utility>
 #include <vector>
-#include "City.h"
 #include <iostream>
 #include <vector>
+#include <algorithm>
+
+#include "City.h"
+
 typedef std::vector<std::vector<std::string>> Csv2DVector;
 class IndividualTour;
 
@@ -37,17 +42,14 @@ public:
   [[nodiscard]] std::vector<IndividualTour *> population() const {
     return _population;
   }
+
   void printFirstIndividual();
 
-  float getPopulationTotal() const;
-
-  float getBestPercent() const;
-
-  float getUpcomerPercent() const;
-
-  float getMutationRate() const;
-
-  float getRankerRate() const;
+  float getPopulationTotal() const { return POPULATION_TOTAL; }
+  float getBestPercent() const { return BEST_TOTAL; }
+  float getUpcomerPercent() const { return UPCOMER_PERCENT; }
+  float getMutationRate() const { return Mutation_Rate; }
+  float getRankerRate() const { return Ranker_Rate; }
 
   void runTest(float populationSize, float bestAmount, float rankerAmount, float mutationRate, float rankerRate, float limit, std::string &output_file, bool secondaryEnabled);
 

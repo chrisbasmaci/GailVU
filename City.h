@@ -4,6 +4,7 @@
 
 #ifndef INDIVIDUALCOUNTRY_H
 #define INDIVIDUALCOUNTRY_H
+
 #include <string>
 #include <cmath>
 #include <vector>
@@ -23,10 +24,6 @@ public:
     [[nodiscard]] std::pair<float, float> coord() const {
         return coord_;
     }
-
-
 };
-
-
 
 #endif //INDIVIDUALCOUNTRY_H
