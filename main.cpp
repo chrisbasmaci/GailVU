@@ -10,7 +10,7 @@
 
 typedef std::vector<std::vector<std::string>> Csv2DVector;
 
-int main(int argc, const char **argv)      //argc = 4(/5), argv = (0 is the file) 1,2,3(,4)
+int main(int argc, const char **argv)
 {
     bool secondaryEnabled = false;
     float limit;
@@ -19,7 +19,7 @@ int main(int argc, const char **argv)      //argc = 4(/5), argv = (0 is the file
 
     for(int i = 1; i < argc; i++)
     {
-        const char *argument = argv[i];         //eg --cities=european-cities.csv
+        const char *argument = argv[i];
         if(strcmp(argument, "--secondary") == 0)
         {
             secondaryEnabled = true;
