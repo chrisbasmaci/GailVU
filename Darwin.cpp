@@ -53,7 +53,7 @@ void Darwin::printBestIndividual(std::string& output_file) {
     bestIndividual = ind->fitness_score() > bestIndividual->fitness_score() ? ind : bestIndividual;
   }
   std::cout << "Path Length: ";
-  std::cout << bestIndividual->path_length() << "km" << std::endl;
+  std::cout << bestIndividual->path_length() << " km" << std::endl;
   std::cout << "Score: "<<bestIndividual->fitness_score()<< std::endl;
 
   std::ofstream file(output_file);
@@ -181,7 +181,7 @@ IndividualTour* Darwin::rouletteWheelSelection(IndividualTour* exclude) {
 }
 
 void Darwin::startEvolving(float limit) {
-  std::ofstream file("./data/path_lengths.txt");
+  std::ofstream file("../data/path_lengths.txt");
   setBestIndividual();
   auto old_best_population_distance = _population[0]->path_length();
   auto current_best_population_distance = _population[0]->path_length();
