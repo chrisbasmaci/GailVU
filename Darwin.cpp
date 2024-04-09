@@ -77,6 +77,23 @@ void Darwin::printBestIndividual(std::string& output_file) {
   std::cout<<std::endl;
 }
 
+void Darwin::printProgress() {
+  if (_population.empty()) {
+    std::cout << "\rNo individuals in population." << std::endl;
+    return;
+  }
+
+  IndividualTour* bestIndividual = _population.at(0);
+  for (auto ind : _population) {
+    bestIndividual = ind->fitness_score() > bestIndividual->fitness_score() ? ind : bestIndividual;
+  }
+
+  // Update the progress information on the same line
+  std::cout << "\rBest Path Length: " << bestIndividual->path_length() << "km"
+            << ", Best Score: " << bestIndividual->fitness_score() << "         " << std::flush;
+
+  std::cout<<std::endl;
+}
 void Darwin::conductSelection() {
   std::vector<IndividualTour*> survivors;
 
@@ -184,6 +201,7 @@ void Darwin::startEvolving(float limit) {
         _population[idx]->fitness();
       }
     }
+    printProgress();
     loopsdone += 50;
     setBestIndividual();
     current_best_population_distance = _population[0]->path_length();

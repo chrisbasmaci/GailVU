@@ -32,6 +32,7 @@ public:
   IndividualTour* rouletteWheelSelection(IndividualTour* exclude = nullptr);
   void conductSelection();
   void printBestIndividual(std::string &output_file);
+  void printProgress();
   std::vector<City*> constructCityVector(const Csv2DVector& data2Dvec);
   void setBestIndividual();
 
