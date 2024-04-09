@@ -56,17 +56,8 @@ int main(int argc, const char **argv)
     auto DARWIN = new Darwin(parsedCSV, secondaryEnabled);
 
     std::cout<<"Starting Program"<<std::endl;
-    DARWIN->runTest(45, 25, 28, 0.3, 0.6, limit, file_path_output, secondaryEnabled);
-    DARWIN->runTest(45, 25, 28, 0.3, 0.6, limit, file_path_output, secondaryEnabled);
-    DARWIN->runTest(45, 25, 28, 0.3, 0.6, limit, file_path_output, secondaryEnabled);
-    DARWIN->runTest(45, 25, 28, 0.3, 0.6, limit, file_path_output, secondaryEnabled);
-    DARWIN->runTest(45, 25, 28, 0.3, 0.6, limit, file_path_output, secondaryEnabled);
-    DARWIN->runTest(45, 25, 28, 0.3, 0.6, limit, file_path_output, secondaryEnabled);
-    DARWIN->runTest(45, 25, 28, 0.3, 0.6, limit, file_path_output, secondaryEnabled);
-    DARWIN->runTest(45, 25, 28, 0.3, 0.6, limit, file_path_output, secondaryEnabled);
-    DARWIN->runTest(45, 25, 28, 0.3, 0.6, limit, file_path_output, secondaryEnabled);
-    DARWIN->runTest(45, 25, 28, 0.3, 0.6, limit, file_path_output, secondaryEnabled);
-    DARWIN->runTest(45, 25, 28, 0.3, 0.6, limit, file_path_output, secondaryEnabled);
+    DARWIN->runTest(45, 25, 28, 0.31, 0.6, limit, file_path_output, secondaryEnabled);
+
     std::cout<<"Ending Program"<<std::endl;
 
     delete DARWIN;

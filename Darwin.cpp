@@ -92,7 +92,6 @@ void Darwin::printProgress() {
   std::cout << "\rBest Path Length: " << bestIndividual->path_length() << "km"
             << ", Best Score: " << bestIndividual->fitness_score() << "         " << std::flush;
 
-  std::cout<<std::endl;
 }
 void Darwin::conductSelection() {
   std::vector<IndividualTour*> survivors;
@@ -209,8 +208,7 @@ void Darwin::startEvolving(float limit) {
     file << current_best_population_distance << "," << loopsdone << std::endl;
   } while (population()[0]->path_length() > limit);
 
-  std::cout << "==========================================="<< std::endl;
-  std::cout << "loopsdone: " << loopsdone << std::endl;
+  std::cout <<std::endl<< "loopsdone: " << loopsdone << std::endl;
 
   file.close();
 }
@@ -239,4 +237,7 @@ void Darwin::runTest(float populationSize, float bestAmount, float rankerAmount,
       std::cout << "used additional criteria" << std::endl;
 
   std::cout << "Elapsed time: " << elapsed.count() << " seconds" << std::endl;
+  std::cout << std::endl<<"==========================================="<< std::endl;
+
+
 }
